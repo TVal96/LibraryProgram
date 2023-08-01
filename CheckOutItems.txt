@@ -1,8 +1,0 @@
-1:Book:The Outsiders:10.90:0:0:0:0
-2:Audio:UTOPIA:8.20:0:0:0:0
-3:Movie:Barbie:25.00:0:0:0:0
-4:Audio:If You Tell:10.90:0:0:0:0
-5:Book:Stay Gold:5.50:0:0:0:0
-6:Movie:Oppenheimer:25.00:0:0:0:0
-7:Movie:Spy Kids:10.50:0:0:0:0
-8:Book:You:6.20:0:0:0:0
