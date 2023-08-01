@@ -9,6 +9,16 @@ public class Main {
         //username:password:userID:address:phoneNumber:userAge:noOfBooksCheckedOut:overdueFee
         userDatabase.generateDatabase();
 
+
+        ////////////Following block of code is is a placeholder example on how to calculate user fee
+        ////////////using the itemValue/itemDueDate from checkedOutItems.txt
+        ////////////And then write it to the user's file on userDatabase.txt
+        ////////////Would ideally call it from the library.
+        //double bookFeeTest = userFeeCalculator.calculateDifferenceFee("John123");
+        //userFeeCalculator.writeUserFee("John123", bookFeeTest);
+        //System.out.format("Value owed: $%.2f", bookFeeTest);
+        //System.out.println();
+
         //The following segment generates a menu for the player to choose from.
         System.out.println("Hello and welcome to the Texas State library.");
         System.out.println("Please select one of the following options:");
@@ -31,6 +41,7 @@ public class Main {
 
                 if(userDatabase.userLogin(username, password)) {
                     System.out.println("Welcome, " + username + "!");
+                    System.out.println("Moving you to our library...");
                     //call library to choose a book/movie then check out?
                 }
                 else {
@@ -55,6 +66,8 @@ public class Main {
                 System.out.println("Would you like to look through our library, or is that all for you today?");
                 //Option 1 = Move to library
                 //Option 2 = Exit program
+                System.out.println("  1. Move to library." + "\n" +
+                        "  9. That's all for me today.");
                 String registerInput = input.nextLine();
                 try {
                     int registerChoice = Integer.parseInt(registerInput);
