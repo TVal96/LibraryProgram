@@ -38,6 +38,7 @@ public class CheckOut extends Item {
     }
 
     public void displayCheckOut() {
-        displayFile("C:\\Users\\mckee\\Downloads\\LibraryProgram-main\\CheckOutItems.txt");
+        final String file_path = "checkedOutItems.txt";
+        displayFile(file_path);
     }
 }

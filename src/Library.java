@@ -54,10 +54,13 @@ public class Library {
                         System.out.println("Option 4");
                     }
                      else if(userChoice == 5){
-                        //see the current fines for the user
-                        //either direct connection to user database to send back
-                        //current fines or done through checkOut class
-                        System.out.println("Option 5");
+                        //Following block of code is is a placeholder example on how to calculate user fee
+                        //using the itemValue/itemDueDate from checkedOutItems.txt
+                        //And then write it to the user's file on userDatabase.txt
+                        double bookFeeTest = userFeeCalculator.calculateDifferenceFee("John123");
+                        userFeeCalculator.writeUserFee("John123", bookFeeTest);
+                        System.out.format("Value owed: $%.2f", bookFeeTest);
+                        System.out.println();
                     }
                     else if(userChoice == 9){
                         //exit program

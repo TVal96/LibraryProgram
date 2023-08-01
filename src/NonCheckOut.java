@@ -5,8 +5,9 @@ public class NonCheckOut extends Item {
     //will simply just display the noncheckoutitems.txt
 
     public void displayNonCheckOut() {
+        final String file_path = "NonCheckOutItems.txt";
         //ask item superclass to display file
-        displayFile("C:\\Users\\mckee\\Downloads\\LibraryProgram-main\\NonCheckOutItems.txt");
+        displayFile(file_path);
     }
 
 }
