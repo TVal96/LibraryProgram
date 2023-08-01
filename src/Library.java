@@ -9,6 +9,7 @@ public class Library {
         try (Scanner input = new Scanner(System.in)) {
             boolean flag = false;
             NonCheckOut nonCheck = new NonCheckOut();
+            CheckOut check = new CheckOut();
 
             while(flag == false) {
                 //The following segment generates a menu for the player to choose from.
@@ -32,7 +33,7 @@ public class Library {
                         //send to check out items (books, audio/video)
                         //The format of the CheckOutItem file is:
                         //type:title:authorname:price:bestseller?:chekedout?:requested?
-                        System.out.println("Option 1");
+                        check.checkOutMenu();
                     }
                     else if(userChoice == 2){
                         //Scroll through non check out items (refrence books, magazines)
@@ -59,8 +60,9 @@ public class Library {
                         System.out.println("Option 5");
                     }
                     else if(userChoice == 9){
-                        //exit back to main
+                        //exit program
                         flag = true;
+                        System.out.println("Happy reading!");
                     }
                 } catch (Exception e) {
                     System.out.println("Sorry, that option is currently not available. Please try again.");
