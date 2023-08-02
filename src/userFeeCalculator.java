@@ -69,7 +69,7 @@ public class userFeeCalculator {
                 }
             }
         } catch (IOException e) {
-            System.out.println("Unable to view file data.");
+            System.out.println("Unable to view file data (value).");
         }
         return null;
     }
@@ -93,7 +93,27 @@ public class userFeeCalculator {
                 }
             }
         } catch (IOException e) {
-            System.out.println("Unable to view file data.");
+            System.out.println("Unable to view file data (date).");
+        }
+        return null;
+    }
+
+
+    public static String getNameOnFile(String username) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(file_path2))) {
+            String currLine;
+            while ((currLine = reader.readLine()) != null) {
+                String[] userData = currLine.split(":");
+                if (userData.length == 8) {
+                    String currUsername = userData[6];
+                    if (currUsername.equals(username)) {
+                        String bookName = userData[2];
+                        return bookName;
+                    }
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Unable to view file data (date).");
         }
         return null;
     }

@@ -33,7 +33,7 @@ public class Main {
                     if(userDatabase.userLogin(username, password)) {
                         System.out.println("Welcome, " + username + "!");
                         //call library to choose a book/movie then check out?
-                        lib.enterLibrary();
+                        lib.enterLibrary(username);
                     }
                     else {
                         System.out.println("Wrong username or password. Please try again.");
@@ -65,7 +65,7 @@ public class Main {
                         if(registerChoice == 1) {
                             //call library to choose a book/movie then check out?
                             System.out.println("Moving you to our library...");
-                            lib.enterLibrary();
+                            lib.enterLibrary(username);
                         }
                         else {
                             System.out.println("Your account has been created. We look forward to seeing you again!");

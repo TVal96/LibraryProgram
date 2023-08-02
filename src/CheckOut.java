@@ -1,5 +1,14 @@
 package src;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class CheckOut extends Item {
@@ -7,15 +16,18 @@ public class CheckOut extends Item {
     //display the checkoutitems.txt
     //see if item is checked out
     //request item
-    public void checkOutMenu() {
+    private final String file_path = "checkedOutItems.txt";
+    Scanner input = new Scanner(System.in);
+
+    public void checkOutMenu(String username) {
         boolean flag = false;
-        Scanner input = new Scanner(System.in);
+        
 
         while (flag == false) {
             System.out.println("\n"+"What would you like to do?");
             System.out.println("Please select one of the following options:");
             System.out.println("  1. Show items that can be checked out." + "\n" +
-                "  2. Check out or request item by item ID number." + "\n" +
+                "  2. Check out item by item ID number." + "\n" +
                 "  9. Exit.");
             System.out.println("Your choice:");
 
@@ -27,8 +39,9 @@ public class CheckOut extends Item {
                 displayCheckOut();
             }
             else if(userChoice == 2){
-                //!!!!need to add check out function!!!!!
-                System.out.println("Option 2");
+                //check age first
+                //System.out.println("Option 2");
+                checkItem(username);
             }
             else if(userChoice == 9){
                 //sends back to library
@@ -38,7 +51,144 @@ public class CheckOut extends Item {
     }
 
     public void displayCheckOut() {
-        final String file_path = "checkedOutItems.txt";
         displayFile(file_path);
+    }
+
+    public void checkItem(String username) {
+        //checks age first then how many books are checked out
+        //if the user is 12 or under.
+        //converts string to int but maybe change getAge function
+        //in userdatabase to just send int?
+        String age = userDatabase.getAge(username);
+        int a = Integer.parseInt(age);
+            if(a <= 12)
+            {
+                String numOfBooks = userDatabase.getNumOfBooksCheckedOut(username);
+                int b = Integer.parseInt(numOfBooks);
+                if(b == 5)
+                {
+                    System.out.println("Sorry, people 12 and under can only check out up to 5 items at a time.");
+                    return;
+                }
+            }
+            
+            //check if book is already checked out return true or false
+            System.out.println("Please enter the ID number of the item you would like to check out.");
+            System.out.println("Your choice:");
+            String userchoice = input.nextLine();
+
+            boolean is = inStock(userchoice);
+            if(is == false)
+            {
+                System.out.println("\n" + "Sorry, that item is already checked out."
+                + "\n" + "Please request the book through the library");
+                return;
+            }
+
+            //check if book is best seller return true or false
+            boolean bs = checkBestSeller(userchoice);
+
+            //calculate due date and change due date in checkedOutItems.txt
+            String due =dueDate(bs, userchoice, username);
+            
+            System.out.println("\n" + "Your due date is: " + due);
+            userDatabase.updateAmountCheckedOut(username);
+    }
+
+    public boolean inStock(String userChoice)
+    {
+        try (BufferedReader reader = new BufferedReader(new FileReader(file_path))) {
+            String currLine;
+            while ((currLine = reader.readLine()) != null) {
+                String[] userData = currLine.split(":");
+                if (userData.length == 8) {
+                    String currID = userData[0];
+                    if (currID.equals(userChoice)) {
+                        String is  = userData[6];
+                        if(is.equals("0"))
+                            return true;
+                        else
+                            return false;
+                    }
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Unable to view file data.");
+        }
+        return false;
+    }
+
+    public boolean checkBestSeller(String userChoice)
+    {
+        try (BufferedReader reader = new BufferedReader(new FileReader(file_path))) {
+            String currLine;
+            while ((currLine = reader.readLine()) != null) {
+                String[] userData = currLine.split(":");
+                if (userData.length == 8) {
+                    String currID = userData[0];
+                    if (currID.equals(userChoice)) {
+                        String bs  = userData[4];
+                        if(bs.equals("1"))
+                            return true;
+                        else
+                            return false;
+                    }
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Unable to view file data.");
+        }
+        return false;
+    }
+
+    public String dueDate(boolean bs, String userChoice, String username)
+    {
+        // Get today's date
+        LocalDate today = LocalDate.now();
+        LocalDate due;
+
+        if(bs == true)
+        {
+            // Add 2 weeks to today's date
+            due = today.plus(2, ChronoUnit.WEEKS);
+        }
+        else
+        {
+            // Add 3 weeks to today's date
+            due = today.plus(3, ChronoUnit.WEEKS);
+        }
+        String updatedDue = due.toString();
+
+        //write to txt to change the checked out name and due date
+        //maybe need to write to userdatabase as well?
+        List<String> lines = new ArrayList<>();
+
+        try(BufferedReader reader = new BufferedReader(new FileReader(file_path))) {
+            String currLine;
+            while ((currLine = reader.readLine()) != null) {
+                lines.add(currLine);
+            }
+        } catch (IOException e) {
+            System.out.println("Unable to read through file.");
+        }
+        for (int i = 0; i<lines.size(); i++) {
+            String[] userData = lines.get(i).split(":");
+            if (userData.length == 8 && userData[0].equals(userChoice)) {
+                userData[6] = username;
+                userData[5] = "1";
+                userData[7] = updatedDue;
+                lines.set(i, String.join(":", userData));
+                break;
+            }
+        }
+
+        try(BufferedWriter writer = new BufferedWriter(new FileWriter(file_path))) {
+            for (String currLine:lines) {
+                writer.write(currLine + System.lineSeparator());
+            }
+        } catch (IOException e) {
+            System.out.println("Unable to write user fee to file.");
+        }
+        return updatedDue;
     }
 }

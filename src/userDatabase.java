@@ -1,5 +1,11 @@
 package src;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 public class userDatabase {
     //A class meant to simulate a database that stores
     //user information on a text file for log in purposes.
@@ -47,6 +53,77 @@ public class userDatabase {
         } catch (IOException e) {
             System.out.println("Unable to register the user on the text file.");
         }
+    }
+
+    public static String getNumOfBooksCheckedOut(String username) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(file_path))) {
+            String currLine;
+            while ((currLine = reader.readLine()) != null) {
+                String[] userData = currLine.split(":");
+                if (userData.length == 8) {
+                    String currUsername = userData[1];
+                    if (currUsername.equals(username)) {
+                        String numOfBooks  = userData[6];
+                        return numOfBooks;
+                    }
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Unable to view file data (value).");
+        }
+        return null;
+    }
+
+    public static String getAge(String username) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(file_path))) {
+            String currLine;
+            while ((currLine = reader.readLine()) != null) {
+                String[] userData = currLine.split(":");
+                if (userData.length == 8) {
+                    String currUsername = userData[1];
+                    if (currUsername.equals(username)) {
+                        String age  = userData[5];
+                        return age;
+                    }
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Unable to view file data (value).");
+        }
+        return null;
+    }
+
+    public static void updateAmountCheckedOut(String username) {
+        List<String> lines = new ArrayList<>();
+
+        try(BufferedReader reader = new BufferedReader(new FileReader(file_path))) {
+            String currLine;
+            while ((currLine = reader.readLine()) != null) {
+                lines.add(currLine);
+            }
+        } catch (IOException e) {
+            System.out.println("Unable to read through file.");
+        }
+
+        for (int i = 0; i<lines.size(); i++) {
+            String[] userData = lines.get(i).split(":");
+            if (userData.length == 8 && userData[1].equals(username)) {
+                int j = Integer.parseInt(userData[6]);
+                j = j+1;
+                userData[6] = Integer.toString(j);
+                lines.set(i, String.join(":", userData));
+                break;
+            }
+        }
+
+        try(BufferedWriter writer = new BufferedWriter(new FileWriter(file_path))) {
+            for (String currLine:lines) {
+                writer.write(currLine + System.lineSeparator());
+            }
+        } catch (IOException e) {
+            System.out.println("Unable to write user fee to file.");
+        }
+
     }
 
     private static int getNextID() {
