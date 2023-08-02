@@ -49,6 +49,25 @@ public class userDatabase {
         }
     }
 
+    public static String getNumOfBooksCheckedOut(String username) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(file_path))) {
+            String currLine;
+            while ((currLine = reader.readLine()) != null) {
+                String[] userData = currLine.split(":");
+                if (userData.length == 8) {
+                    String currUsername = userData[1];
+                    if (currUsername.equals(username)) {
+                        String numOfBooks  = userData[6];
+                        return numOfBooks;
+                    }
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Unable to view file data (value).");
+        }
+        return null;
+    }
+
     private static int getNextID() {
         int nextID = 1;
 

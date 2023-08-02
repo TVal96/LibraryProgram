@@ -1,15 +1,10 @@
 package src;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+import java.text.*;
+import java.util.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.io.FileWriter;
-import java.io.BufferedWriter;
-import java.text.DecimalFormat;
 
 public class userFeeCalculator {
     private static final String file_path1 = "userDatabase.txt";
@@ -69,7 +64,7 @@ public class userFeeCalculator {
                 }
             }
         } catch (IOException e) {
-            System.out.println("Unable to view file data.");
+            System.out.println("Unable to view file data (value).");
         }
         return null;
     }
@@ -93,7 +88,27 @@ public class userFeeCalculator {
                 }
             }
         } catch (IOException e) {
-            System.out.println("Unable to view file data.");
+            System.out.println("Unable to view file data (date).");
+        }
+        return null;
+    }
+
+
+    public static String getNameOnFile(String username) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(file_path2))) {
+            String currLine;
+            while ((currLine = reader.readLine()) != null) {
+                String[] userData = currLine.split(":");
+                if (userData.length == 8) {
+                    String currUsername = userData[6];
+                    if (currUsername.equals(username)) {
+                        String bookName = userData[2];
+                        return bookName;
+                    }
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Unable to view file data (date).");
         }
         return null;
     }
