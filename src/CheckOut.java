@@ -85,11 +85,13 @@ public class CheckOut extends Item {
                 return;
             }
 
-            //check if book is best seller return true or false
+            //check if book is best seller and if audio/video return true or false
             boolean bs = checkBestSeller(userchoice);
+            boolean av = checkAudioOrVideo(userchoice);
+            System.out.println(av);
 
             //calculate due date and change due date in checkedOutItems.txt
-            String due =dueDate(bs, userchoice, username);
+            String due =dueDate(bs, av, userchoice, username);
             
             System.out.println("\n" + "Your due date is: " + due);
             userDatabase.updateAmountCheckedOut(username);
@@ -141,13 +143,36 @@ public class CheckOut extends Item {
         return false;
     }
 
-    public String dueDate(boolean bs, String userChoice, String username)
+    public boolean checkAudioOrVideo(String userChoice)
+    {
+        try (BufferedReader reader = new BufferedReader(new FileReader(file_path))) {
+            String currLine;
+            while ((currLine = reader.readLine()) != null) {
+                String[] userData = currLine.split(":");
+                if (userData.length == 8) {
+                    String currID = userData[0];
+                    if (currID.equals(userChoice)) {
+                        String av  = userData[1];
+                        if(av.equals("Audio") || av.equals("Video"))
+                            return true;
+                        else
+                            return false;
+                    }
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Unable to view file data.");
+        }
+        return false;
+    }
+
+    public String dueDate(boolean bs, boolean av, String userChoice, String username)
     {
         // Get today's date
         LocalDate today = LocalDate.now();
         LocalDate due;
 
-        if(bs == true)
+        if(bs == true || av == true)
         {
             // Add 2 weeks to today's date
             due = today.plus(2, ChronoUnit.WEEKS);
