@@ -58,7 +58,7 @@ public class userFeeCalculator {
             String currLine;
             while ((currLine = reader.readLine()) != null) {
                 String[] userData = currLine.split(":");
-                if (userData.length == 8) {
+                if (userData.length == 10) {
                     String currUsername = userData[6];
                     if (currUsername.equals(username)) {
                         String bookValue = userData[3];
@@ -81,7 +81,7 @@ public class userFeeCalculator {
             String currLine;
             while ((currLine = reader.readLine()) != null) {
                 String[] userData = currLine.split(":");
-                if (userData.length == 8) {
+                if (userData.length == 10) {
                     String currUsername = userData[6];
                     if (currUsername.equals(username)) {
                         String rentDate = userData[7];
@@ -104,7 +104,7 @@ public class userFeeCalculator {
             String currLine;
             while ((currLine = reader.readLine()) != null) {
                 String[] userData = currLine.split(":");
-                if (userData.length == 8) {
+                if (userData.length == 10) {
                     String currUsername = userData[6];
                     if (currUsername.equals(username)) {
                         String bookName = userData[2];
