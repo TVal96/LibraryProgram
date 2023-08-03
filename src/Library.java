@@ -33,7 +33,7 @@ public class Library {
                     if(userChoice == 1){
                         //send to check out items (books, audio/video)
                         //The format of the CheckOutItem file is:
-                        //ItemID:ItemType(book/audio/video):ItemName:ItemValue:ItemBestSeller(0/1):CheckedOut(0/1):CurrentReader:DueDate
+                        //ItemID:ItemType(book/audio/video):ItemName:ItemValue:ItemBestSeller(0/1):CheckedOut(0/1):CurrentReader:DueDate:requested(0/1):renewed(0/1)?
                         check.checkOutMenu(username);
                     }
                     else if(userChoice == 2){
