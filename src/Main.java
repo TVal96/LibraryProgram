@@ -74,6 +74,7 @@ public class Main {
                     } catch (NumberFormatException ex) {
                         System.out.println("Your account has been created. We look forward to seeing you again!");
                     }
+
                 }
                 else if(userChoice == 9) {
                     //Exit the application.
