@@ -69,7 +69,7 @@ public class CheckOut extends Item {
             {
                 String numOfBooks = userDatabase.getNumOfBooksCheckedOut(username);
                 int b = Integer.parseInt(numOfBooks);
-                if(b == 5)
+                if(b >= 5)
                 {
                     System.out.println("\n" + "Sorry, people 12 and under can only check out up to 5 items at a time.");
                     return;
